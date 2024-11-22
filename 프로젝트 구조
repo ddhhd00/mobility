@@ -9,3 +9,15 @@ backend/
 │   ├── db_setup.py      # DB 초기화 스크립트
 │   └── migrations/      # DB 마이그레이션
 └── requirements.txt     # Python 패키지 목록
+
+
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── Reservation.js   # 예약 화면
+│   │   ├── VehicleList.js   # 차량 목록 화면
+│   │   └── UserLogin.js     # 사용자 로그인
+│   ├── services/
+│   │   └── api.js           # API 연동 서비스
+│   └── App.js               # 메인 애플리케이션
+└── package.json
