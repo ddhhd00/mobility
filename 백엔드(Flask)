@@ -1,0 +1,74 @@
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+app = Flask(__name__)
+
+# 데이터베이스 설정
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///autotaxi.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# 모델 정의
+class Vehicle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    owner = db.Column(db.String(100), nullable=False)
+    vehicle_type = db.Column(db.String(50), nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    availability = db.Column(db.Boolean, default=True)
+
+class Reservation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(100), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
+    reservation_time = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(50), default="Pending")
+
+# 데이터베이스 초기화
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+# 차량 데이터 추가
+@app.route('/vehicles', methods=['POST'])
+def add_vehicle():
+    data = request.json
+    new_vehicle = Vehicle(
+        owner=data['owner'],
+        vehicle_type=data['vehicle_type'],
+        location=data['location'],
+        availability=True
+    )
+    db.session.add(new_vehicle)
+    db.session.commit()
+    return jsonify({"message": "Vehicle added successfully"}), 201
+
+# 차량 조회
+@app.route('/vehicles', methods=['GET'])
+def get_vehicles():
+    vehicles = Vehicle.query.all()
+    output = []
+    for vehicle in vehicles:
+        output.append({
+            'id': vehicle.id,
+            'owner': vehicle.owner,
+            'vehicle_type': vehicle.vehicle_type,
+            'location': vehicle.location,
+            'availability': vehicle.availability
+        })
+    return jsonify(output), 200
+
+# 예약 추가
+@app.route('/reservations', methods=['POST'])
+def add_reservation():
+    data = request.json
+    new_reservation = Reservation(
+        user=data['user'],
+        vehicle_id=data['vehicle_id']
+    )
+    db.session.add(new_reservation)
+    db.session.commit()
+    return jsonify({"message": "Reservation created successfully"}), 201
+
+if __name__ == '__main__':
+    app.run(debug=True)
