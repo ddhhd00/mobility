@@ -1,0 +1,20 @@
+사용자 이동 패턴 분석 및 추천
+
+from sklearn.cluster import KMeans
+import pandas as pd
+import numpy as np
+
+# 예제 데이터: 사용자 이동 기록
+data = {
+    "user_id": [1, 2, 3, 1, 2, 3],
+    "pickup_lat": [37.56, 37.57, 37.55, 37.58, 37.59, 37.57],
+    "pickup_long": [126.97, 126.98, 126.96, 126.99, 126.95, 126.94]
+}
+df = pd.DataFrame(data)
+
+# 클러스터링 수행
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(df[["pickup_lat", "pickup_long"]])
+
+print("클러스터링 결과:")
+print(df)
