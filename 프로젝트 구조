@@ -1,0 +1,11 @@
+backend/
+├── app.py               # Flask 애플리케이션 엔트리
+├── models.py            # 데이터베이스 모델 정의
+├── routes/              # 각 기능별 라우트 분리
+│   ├── vehicles.py      # 차량 관련 API
+│   ├── reservations.py  # 예약 관련 API
+│   └── users.py         # 사용자 관리 API
+├── database/            # 데이터베이스 관리
+│   ├── db_setup.py      # DB 초기화 스크립트
+│   └── migrations/      # DB 마이그레이션
+└── requirements.txt     # Python 패키지 목록
