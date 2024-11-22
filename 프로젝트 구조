@@ -1,14 +1,18 @@
 backend/
-├── app.py               # Flask 애플리케이션 엔트리
-├── models.py            # 데이터베이스 모델 정의
-├── routes/              # 각 기능별 라우트 분리
-│   ├── vehicles.py      # 차량 관련 API
-│   ├── reservations.py  # 예약 관련 API
-│   └── users.py         # 사용자 관리 API
-├── database/            # 데이터베이스 관리
-│   ├── db_setup.py      # DB 초기화 스크립트
-│   └── migrations/      # DB 마이그레이션
-└── requirements.txt     # Python 패키지 목록
+├── app.js               # 메인 서버 파일
+├── routes/              # 라우트 모듈
+│   ├── vehicles.js      # 차량 관련 API
+│   ├── reservations.js  # 예약 관련 API
+│   └── users.js         # 사용자 관련 API
+├── models/              # 데이터베이스 모델 정의
+│   ├── Vehicle.js
+│   ├── Reservation.js
+│   └── User.js
+├── config/              # 설정 파일
+│   └── db.js            # DB 연결 설정
+├── package.json         # 프로젝트 설정 파일
+└── .env                 # 환경 변수 설정
+
 
 
 frontend/
