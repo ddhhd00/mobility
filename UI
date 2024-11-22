@@ -1,0 +1,49 @@
+import React, { useState, useEffect } from "react";
+
+function Reservation() {
+  const [vehicles, setVehicles] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    fetch("/vehicles")
+      .then((response) => response.json())
+      .then((data) => setVehicles(data));
+  }, []);
+
+  const handleReservation = () => {
+    fetch("/reservations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: userName,
+        vehicle_id: selectedVehicle,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => alert(data.message));
+  };
+
+  return (
+    <div>
+      <h1>Vehicle Reservation</h1>
+      <input
+        type="text"
+        placeholder="Enter your name"
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+      />
+      <select onChange={(e) => setSelectedVehicle(e.target.value)}>
+        <option value="">Select a vehicle</option>
+        {vehicles.map((vehicle) => (
+          <option key={vehicle.id} value={vehicle.id}>
+            {vehicle.vehicle_type} - {vehicle.location}
+          </option>
+        ))}
+      </select>
+      <button onClick={handleReservation}>Reserve</button>
+    </div>
+  );
+}
+
+export default Reservation;
