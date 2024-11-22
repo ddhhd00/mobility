@@ -1,0 +1,10 @@
+@app.route('/vehicles/<int:vehicle_id>/update_location', methods=['PUT'])
+def update_vehicle_location(vehicle_id):
+    data = request.json
+    vehicle = Vehicle.query.get(vehicle_id)
+    if not vehicle:
+        return jsonify({"message": "Vehicle not found"}), 404
+
+    vehicle.location = data['location']
+    db.session.commit()
+    return jsonify({"message": "Location updated successfully"}), 200
